@@ -3,16 +3,16 @@
 import logging
 logging.basicConfig()
 
+import argparse
+import copy
+import httplib2
+import json
 import os
 import sys
-import httplib2
-import argparse
-from oauth2client import tools
-from oauth2client.file import Storage
-from oauth2client.client import flow_from_clientsecrets
-import json
-import copy
+
 from apiclient.discovery import build
+from oauth2client import tools
+from oauth2client.client import SignedJwtAssertionCredentials
 
 CLOUD_DNS_SCOPE = 'https://www.googleapis.com/auth/ndev.clouddns.readwrite'
 
@@ -41,15 +41,15 @@ def next_soa_record(soa_record):
 
 def main():
     parser = argparse.ArgumentParser(parents=[tools.argparser])
-    parser.add_argument('--client_secret', help='location of client_secret.json',
-                        default='client_secret.json')
+    parser.add_argument('--client_secret', help='location of PEM service account secret',
+                        default='privatekey.pem')
     parser.add_argument('--pretend', help='Just pretend, don\'t do anything',
                         default=False, action='store_true')
+    parser.add_argument('client_email', help='Client email address as listed in the developer console')
     parser.add_argument('project_name', help='Google cloud project name')
     parser.add_argument('zone', help='Zone to update')
-    parser.add_argument(
-        'sub_domain',
-        help="Sub domain to map current ip address to")
+    parser.add_argument('sub_domain',
+                        help="Sub domain to map current ip address to")
 
     flags = parser.parse_args()
 
@@ -65,13 +65,11 @@ def main():
                       'with this tool'))
         sys.exit(1)
 
-    storage = Storage(os.path.expanduser('~/.cloud_dns_ip_sync_creds'))
-    flow = flow_from_clientsecrets(flags.client_secret, scope=CLOUD_DNS_SCOPE)
+    with open(flags.client_secret) as f:
+        private_key = f.read()
 
-    credentials = storage.get()
-
-    if credentials is None or credentials.invalid:
-        credentials = tools.run_flow(flow, storage, flags)
+    credentials = SignedJwtAssertionCredentials(flags.client_email, private_key,
+                                                scope=CLOUD_DNS_SCOPE)
 
     http = httplib2.Http()
     auth_http = credentials.authorize(http)

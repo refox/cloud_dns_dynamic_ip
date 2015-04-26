@@ -4,15 +4,15 @@ The script [update_dynamic_ip.py] is designed to manage syncing the external ip 
 # Requirements
 * google-api-python-client
 * Google Cloud Platform Project (with [CloudDNS](https://developers.google.com/cloud-dns/getting-started) enabled)
-* Valid client secrets json file ([instructions](https://developers.google.com/api-client-library/python/guide/aaa_oauth#acquiring))
+* Valid service account secrets file ([instructions](https://developers.google.com/api-client-library/python/guide/aaa_oauth#acquiring))
+  * The downloaded file must be converted with 'openssl pkcs12 -in project.p12 -nodes -nocerts > privatekey.pem'.
 
 # Getting Started
 
-* Run the script once to setup OAuth permissions
 * Schedule the script to run (cron)
 
 # Usage
-usage: update_dynamic_ip.py project_name zone sub_domain
+usage: update_dynamic_ip.py client_email project_name zone sub_domain
 
 # Program Flow
 * List all records in the managed zone
