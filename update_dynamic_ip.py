@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 import logging
 logging.basicConfig()
@@ -61,8 +61,8 @@ def main():
 
     if flags.sub_domain == '':
         log.critical(('Very Bad Things(tm) will happen if you '
-                           'try to set the root record of your zone '
-                           'with this tool'))
+                      'try to set the root record of your zone '
+                      'with this tool'))
         sys.exit(1)
 
     storage = Storage(os.path.expanduser('~/.cloud_dns_ip_sync_creds'))
@@ -105,7 +105,7 @@ def main():
     body['additions'].append(new_record)
     if old_record:
         assert old_record.get('rrdatas', False)
-        assert len(old_record['rrdatas']) == 1 
+        assert len(old_record['rrdatas']) == 1
         if old_record['rrdatas'][0] == current_ip and not flags.pretend:
             log.debug('IP address unchanged, exiting')
             sys.exit(0)

@@ -12,7 +12,7 @@ The script [update_dynamic_ip.py] is designed to manage syncing the external ip 
 * Schedule the script to run (cron)
 
 # Usage
-usage: update_dynamic_ip.py project_name zone sub_domain 
+usage: update_dynamic_ip.py project_name zone sub_domain
 
 # Program Flow
 * List all records in the managed zone
