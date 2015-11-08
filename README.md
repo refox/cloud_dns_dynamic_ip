@@ -1,8 +1,8 @@
 # Overview
-The script [update_dynamic_ip.py] is designed to manage syncing the external ip address (that is, the ip address the world sees, as viewed from myexternalip.com) of the machine the script is run on with a google cloud dns managed zone.
+The script [update_dynamic_ip.py] is designed to manage syncing the external IP address (that is, the IP address the world sees, as viewed from myexternalip.com) of the machine the script is run on with a Google Cloud DNS managed zone.
 
 # Requirements
-* google-api-python-client
+* python with httplib2, google-api-python-client and pyopenssl
 * Google Cloud Platform Project (with [CloudDNS](https://developers.google.com/cloud-dns/getting-started) enabled)
 * Valid service account secrets file ([instructions](https://developers.google.com/api-client-library/python/guide/aaa_oauth#acquiring))
   * The downloaded file must be converted with 'openssl pkcs12 -in project.p12 -nodes -nocerts > privatekey.pem'.
