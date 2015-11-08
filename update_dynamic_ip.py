@@ -65,7 +65,7 @@ def main():
                       'with this tool'))
         sys.exit(1)
 
-    with open(flags.client_secret) as f:
+    with open(flags.client_secret, "rb") as f:
         private_key = f.read()
 
     credentials = SignedJwtAssertionCredentials(flags.client_email, private_key,
